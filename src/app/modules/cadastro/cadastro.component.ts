@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient } from "@angular/common/http";
 import { map } from "rxjs/operators"
+import { Router } from '@angular/router';
 
 function marcaCamposDoFormComoTouched(form : FormGroup){
     const controlKeys = Object.keys(form.controls);
@@ -19,13 +20,14 @@ export class CadastroComponent {
         nome : new FormControl('', [Validators.required, Validators.minLength(3)]),
         usuario: new FormControl ('', {
             asyncValidators: [this.validaUsuario.bind(this)],
-            validators: [Validators.required, Validators.maxLength(20)],
-            updateOn: 'blur'
-        })
-
-
-        //usuario: new FormControl('', [Validators.required, Validators.maxLength(10)],
-        //[this.validaUsuario.bind(this)])
+            validators: [Validators.required, Validators.maxLength(20)]
+        }),
+        telefone: new FormControl('', [
+            Validators.required, 
+            Validators.minLength(8), 
+            Validators.maxLength(9),
+            Validators.pattern('[0-9]{8}([0-9])?')
+        ])
     });
 
     handleCadastroDeUsuario(){
@@ -37,11 +39,19 @@ export class CadastroComponent {
         .post('http://localhost:3200/users', {
             name: this.formCadastro.get('nome').value,
             username: this.formCadastro.value.usuario,
-            phone: '43423423423'
+            phone: this.formCadastro.value.telefone
         })
         .subscribe(
-            response => {
+            (response : any) => {
                 console.log('Request enviado', response);
+                //Ideial, seria colocar um elemento visual na tela
+                alert('Cadastro realizado com sucesso!!!');
+                //DIspara um loader na tela
+                setTimeout(() => {
+                    //cancela o loader
+                    this.roteamento.navigate(['login'], {
+                    state: {email: response.email, password: response.password}})
+                }, 500);
                 err => {
                     console.log(err);
                 }
@@ -61,5 +71,5 @@ export class CadastroComponent {
         );
     }
 
-    constructor(private httpClient : HttpClient) {}
+    constructor(private httpClient : HttpClient, private roteamento : Router) {}
 }
