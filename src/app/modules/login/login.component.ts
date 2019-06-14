@@ -47,25 +47,5 @@ export class LoginComponent{
                 this.router.navigate(['inbox']);
             })
         }
-        
-        // if (this.formLogin.valid){
-        //     this.httpClient
-        //     .post('http://localhost:3200/login', {
-        //         email: this.formLogin.get('email').value,
-        //         password: this.formLogin.get('senha').value
-        //     })
-        //     .subscribe (
-        //         (respostaDoServer : any) => {
-        //             console.log(respostaDoServer);
-        //             localStorage.setItem('TOKEN', respostaDoServer.TOKEN);
-        //             this.router.navigate(['inbox']);
-        //         },
-        //         () => {
-        //             alert('Erro ao fazer login');
-        //         }
-        //     )
-        // }
-
-        
     }
 }

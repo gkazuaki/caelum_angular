@@ -1,4 +1,5 @@
 import { Component, Input } from "@angular/core";
+import { HeaderService } from './header.service';
 
 @Component({
     selector: 'cmail-header',
@@ -11,7 +12,13 @@ export class HeaderComponent {
 
     isMenuOpen = false;
 
+    constructor(private headerService: HeaderService) {}
+
     handleMenuClick(){
         this.isMenuOpen = !this.isMenuOpen;
+    }
+
+    capturaInputDoSearch(valor: string) {
+        this.headerService.atualizaOsDadosDoFiltroDaBusca(valor);
     }
 }
